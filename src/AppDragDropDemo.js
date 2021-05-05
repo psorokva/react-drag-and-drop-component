@@ -4,27 +4,38 @@ import "./App.css";
 export default class AppDragDropDemo extends Component {
   state = {
     tasks: [
-      { name: "Learn Angular", category: "wip", bgcolor: "yellow" },
-      { name: "React", category: "wip", bgcolor: "pink" },
-      { name: "Vue", category: "complete", bgcolor: "skyblue" },
+      {
+        id: 1,
+        taskName: "Learn React",
+        type: "inProgress",
+        bgcolor: "lightblue",
+      },
+      {
+        id: 2,
+        taskName: "Work on project",
+        type: "inProgress",
+        bgcolor: "pink",
+      },
+      { id: 3, taskName: "Work out", type: "done", bgcolor: "lightgrey" },
+      { id: 4, taskName: "Play WOW", type: "done", bgcolor: "" },
     ],
   };
 
-  onDragStart = (ev, id) => {
-    console.log("dragstart:", id);
-    ev.dataTransfer.setData("text/plain", id);
+  onDragStart = (event, taskName) => {
+    console.log("dragstart on div: ", taskName);
+    event.dataTransfer.setData("taskName", taskName);
   };
 
-  onDragOver = (ev) => {
-    ev.preventDefault();
+  onDragOver = (event) => {
+    event.preventDefault();
   };
 
-  onDrop = (ev, cat) => {
-    var id = ev.dataTransfer.getData("text");
+  onDrop = (event, cat) => {
+    let taskName = event.dataTransfer.getData("taskName");
 
     let tasks = this.state.tasks.filter((task) => {
-      if (task.name === id) {
-        task.category = cat;
+      if (task.taskName === taskName) {
+        task.type = cat;
       }
       return task;
     });
@@ -37,40 +48,41 @@ export default class AppDragDropDemo extends Component {
 
   render() {
     var tasks = {
-      wip: [],
-      complete: [],
+      inProgress: [],
+      done: [],
     };
-    this.state.tasks.forEach((t) => {
-      tasks[t.category].push(
+    this.state.tasks.forEach((task) => {
+      tasks[task.type].push(
         <div
-          key={t.name}
-          onDragStart={(e) => this.onDragStart(e, t.name)}
+          key={task.id}
+          onDragStart={(event) => this.onDragStart(event, task.taskName)}
           draggable
           className="draggable"
-          style={{ backgroundColor: t.bgcolor }}
+          style={{ backgroundColor: task.bgcolor }}
         >
-          {t.name}
+          {task.taskName}
         </div>
       );
     });
     return (
-      <div className="container-drag">
-        <h2 className="header"> DRAG & DROP DEMO </h2>
+      <div className="drag-container">
+        <h2 className="header"> Drag & Drop To Do List </h2>
+        <div className="underline"></div>
         <div
-          className="wip"
-          onDragOver={(e) => this.onDragOver(e)}
-          onDrop={(e) => this.onDrop(e, "wip")}
+          className="inProgress"
+          onDragOver={(event) => this.onDragOver(event)}
+          onDrop={(event) => this.onDrop(event, "inProgress")}
         >
-          <span className="task-header">WIP</span>
-          {tasks.wip}
+          <span className="group-header">In Progress</span>
+          {tasks.inProgress}
         </div>
         <div
           className="droppable"
-          onDragOver={(e) => this.onDragOver(e)}
-          onDrop={(e) => this.onDrop(e, "complete")}
+          onDragOver={(event) => this.onDragOver(event)}
+          onDrop={(event) => this.onDrop(event, "done")}
         >
-          <span className="task-header">COMPLETED</span>
-          {tasks.complete}
+          <span className="group-header">Done</span>
+          {tasks.done}
         </div>
       </div>
     );
