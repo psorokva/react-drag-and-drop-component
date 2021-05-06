@@ -52,20 +52,18 @@ body {
   line-height: 1.5;
   font-size: 0.875rem;
 }
-
-.drag-container {
-  text-align: center;
-}
-
 .header {
   font-size: 2rem;
   display: inline-block;
-  margin: 0;
+  margin-top: 1rem;
+  margin-bottom: 0;
   padding: 0;
   width: 100%;
+  text-align: center;
 }
 
 .group-header {
+  display: inline-block;
   font-size: 1.75rem;
   text-align: center;
   margin-bottom: 4rem;
@@ -75,13 +73,29 @@ body {
   margin-bottom: 0.75rem;
 }
 
+.drag-container {
+  text-align: center;
+}
+
 .droppable {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  right: 0;
-  top: 10;
-  border-left: 2px solid var(--clr-primary-5);
+  margin-top: 2rem;
+  float: left;
+  width: 33.33%;
+  min-height: 200px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.drag-container:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 600px) {
+  .droppable {
+    width: 100%;
+    display: block;
+  }
 }
 
 .draggable {
@@ -90,15 +104,6 @@ body {
   height: auto;
   background-color: rgb(238, 238, 136);
   margin: 10px auto;
-}
-
-.inProgress {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  left: 0;
-  top: 10;
-  border-right: 2px solid var(--clr-primary-5);
 }
 
 .underline {

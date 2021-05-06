@@ -16,8 +16,18 @@ export default class AppDragDropDemo extends Component {
         type: "inProgress",
         bgcolor: "pink",
       },
-      { id: 3, taskName: "Work out", type: "done", bgcolor: "lightgrey" },
-      { id: 4, taskName: "Play WOW", type: "done", bgcolor: "" },
+      {
+        id: 3,
+        taskName: "Work out",
+        type: "new",
+        bgcolor: "lightgrey",
+      },
+      {
+        id: 4,
+        taskName: "Play WOW",
+        type: "done",
+        bgcolor: "",
+      },
     ],
   };
 
@@ -50,6 +60,7 @@ export default class AppDragDropDemo extends Component {
     var tasks = {
       inProgress: [],
       done: [],
+      new: [],
     };
     this.state.tasks.forEach((task) => {
       tasks[task.type].push(
@@ -65,26 +76,36 @@ export default class AppDragDropDemo extends Component {
       );
     });
     return (
-      <div className="drag-container">
+      <>
         <h2 className="header"> Drag & Drop To Do List </h2>
         <div className="underline"></div>
-        <div
-          className="inProgress"
-          onDragOver={(event) => this.onDragOver(event)}
-          onDrop={(event) => this.onDrop(event, "inProgress")}
-        >
-          <span className="group-header">In Progress</span>
-          {tasks.inProgress}
+        <div className="drag-container">
+          <div
+            className="droppable"
+            onDragOver={(event) => this.onDragOver(event)}
+            onDrop={(event) => this.onDrop(event, "new")}
+          >
+            <span className="group-header">New</span>
+            {tasks.new}
+          </div>
+          <div
+            className="droppable"
+            onDragOver={(event) => this.onDragOver(event)}
+            onDrop={(event) => this.onDrop(event, "inProgress")}
+          >
+            <span className="group-header">In Progress</span>
+            {tasks.inProgress}
+          </div>
+          <div
+            className="droppable"
+            onDragOver={(event) => this.onDragOver(event)}
+            onDrop={(event) => this.onDrop(event, "done")}
+          >
+            <span className="group-header">Done</span>
+            {tasks.done}
+          </div>
         </div>
-        <div
-          className="droppable"
-          onDragOver={(event) => this.onDragOver(event)}
-          onDrop={(event) => this.onDrop(event, "done")}
-        >
-          <span className="group-header">Done</span>
-          {tasks.done}
-        </div>
-      </div>
+      </>
     );
   }
 }
